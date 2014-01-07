@@ -1,0 +1,8 @@
+{
+	"name":	"SlaxWeb/Logger",
+	"autoload":	{
+		"psr-0":	{
+			"SlaxWeb\\":	"src"
+		}
+	}
+}
