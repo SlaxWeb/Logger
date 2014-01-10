@@ -117,7 +117,7 @@ class Logger
 			// level not set correctly
 			$context['level'] = $level;
 			$this->logMessage(
-				LVL_NOTICE,
+				NOTICE,
 				'Log level ({level}) was set incorrectly in \Library\Logger\Logger::logMessage()',
 				$context
 			);
@@ -184,14 +184,14 @@ class Logger
 	{
 		$status = false;
 		switch ($level) {
-		case LVL_EMERGENCY:
-		case LVL_ALERT:
-		case LVL_CRITICAL:
-		case LVL_ERROR:
-		case LVL_WARNING:
-		case LVL_NOTICE:
-		case LVL_INFO:
-		case LVL_DEBUG:
+		case EMERGENCY:
+		case ALERT:
+		case CRITICAL:
+		case ERROR:
+		case WARNING:
+		case NOTICE:
+		case INFO:
+		case DEBUG:
 			$status = true;
 			break;
 		}
@@ -231,12 +231,12 @@ class Logger
 		// get the correct backtrace for the level
 		$return = '';
 		switch ($level) {
-		case LVL_EMERGENCY:
-		case LVL_ALERT:
-		case LVL_CRITICAL:
-		case LVL_ERROR:
-		case LVL_WARNING:
-		case LVL_DEBUG:
+		case EMERGENCY:
+		case ALERT:
+		case CRITICAL:
+		case ERROR:
+		case WARNING:
+		case DEBUG:
 			$return['class'] = $backtrace[1]['class'];
 			$return['method'] = $backtrace[1]['function'];
 			break;
