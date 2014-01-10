@@ -109,8 +109,7 @@ class Logger
 				// interpolate the message first
 				$message = $this->_interpolate($message, $context);
 				$line = date('Y-m-d H:i:s');
-				$line .= ' - ' . strtoupper($level) . ' - ' . $message . " Data: \n";
-				$line .= print_r($this->getBacktrace($level, debug_backtrace()), true);
+				$line .= ' - ' . strtoupper($level) . ' - ' . $message . "\n";
 				fwrite($this->_logHandle, $line);
 			}
 		} else {
@@ -215,32 +214,5 @@ class Logger
 			// logging level is lower than set
 			return false;
 		}
-	}
-
-	/**
-	 * Get the debug backtrace
-	 *
-	 * Returns the debug backtrace, amount depending on the level
-	 *
-	 * @param $level string Log level
-	 * @param $backtrace array Raw debug backtrace
-	 * @return string Debug backtrace
-	 */
-	protected function getBacktrace($level, $backtrace)
-	{
-		// get the correct backtrace for the level
-		$return = '';
-		switch ($level) {
-		case EMERGENCY:
-		case ALERT:
-		case CRITICAL:
-		case ERROR:
-		case WARNING:
-		case DEBUG:
-			$return['class'] = $backtrace[1]['class'];
-			$return['method'] = $backtrace[1]['function'];
-			break;
-		}
-		return $return;
 	}
 }
