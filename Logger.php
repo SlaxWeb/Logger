@@ -23,6 +23,12 @@ class Logger
 	 */
 	protected $_logFile = '';
 	/**
+	 * Logging treshold
+	 *
+	 * @var int
+	 */
+	protected $_treshold = 0;
+	/**
 	 * Log file handle
 	 *
 	 * @var resource
@@ -66,6 +72,8 @@ class Logger
 		if($fileName === null) {
 			$fileName = 'log';
 		}
+		// set treshold
+		$this->_treshold = $treshold;
 		// append date to file name
 		$this->_logFile = $this->_logDir . $fileName . '-' . $date . '.log';
 
@@ -199,17 +207,12 @@ class Logger
 	protected function _checkLogConfig($level)
 	{
 		//check if loggin is enabled
-		if ($this->_config['logging_enabled'] === 1) {
-			// check if the level is equal or above the set logging level
-			$level = constant('self::' . $level);
-			if ($this->_config['logging_log_level'] >= $level) {
-				return true;
-			} else {
-				// logging level is lower than set
-				return false;
-			}
+		// check if the level is equal or above the set logging level
+		$level = constant('self::' . $level);
+		if ($this->_treshold >= $level) {
+			return true;
 		} else {
-			// logging is disabled
+			// logging level is lower than set
 			return false;
 		}
 	}
