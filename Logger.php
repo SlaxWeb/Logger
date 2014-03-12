@@ -40,6 +40,12 @@ class Logger
 	 * @var array
 	 */
 	protected $_config = array();
+	/**
+	 * Log levels
+	 *
+	 * @var array
+	 */
+	protected $_levels = array();
 
 	/**
 	 * Log levels
@@ -64,6 +70,17 @@ class Logger
 	 */
 	public function __construct($treshold, $logDir, $fileName = null)
 	{
+		// fill levels
+		$this->_levels = array(
+			self::EMERGENCY	=>	"EMERGENCY",
+			self::ALERT     =>	"ALERT",
+			self::CRITICAL  =>	"CRITICAL",
+			self::ERROR     =>	"ERROR",
+			self::WARNING   =>	"WARNING",
+			self::NOTICE    =>	"NOTICE",
+			self::INFO      =>	"INFO",
+			self::DEBUG     =>	"DEBUG"
+		);
 		// set log dir
 		$this->_logDir = $logDir;
 		// get current date
@@ -108,6 +125,9 @@ class Logger
 			if ($this->_checkLogConfig($level) === true) {
 				// interpolate the message first
 				$message = $this->_interpolate($message, $context);
+				if (is_int($level) === true) {
+					$level = $this->_levels[$level];
+				}
 				$line = date('Y-m-d H:i:s');
 				$line .= ' - ' . strtoupper($level) . ' - ' . $message . "\n";
 				fwrite($this->_logHandle, $line);
