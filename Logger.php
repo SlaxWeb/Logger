@@ -116,7 +116,7 @@ class Logger
 			// level not set correctly
 			$context['level'] = $level;
 			$this->logMessage(
-				NOTICE,
+				self::NOTICE,
 				'Log level ({level}) was set incorrectly in \Library\Logger\Logger::logMessage()',
 				$context
 			);
@@ -183,14 +183,14 @@ class Logger
 	{
 		$status = false;
 		switch ($level) {
-		case EMERGENCY:
-		case ALERT:
-		case CRITICAL:
-		case ERROR:
-		case WARNING:
-		case NOTICE:
-		case INFO:
-		case DEBUG:
+		case self::EMERGENCY:
+		case self::ALERT:
+		case self::CRITICAL:
+		case self::ERROR:
+		case self::WARNING:
+		case self::NOTICE:
+		case self::INFO:
+		case self::DEBUG:
 			$status = true;
 			break;
 		}
