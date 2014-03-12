@@ -207,7 +207,9 @@ class Logger
 	{
 		//check if loggin is enabled
 		// check if the level is equal or above the set logging level
-		$level = constant('self::' . $level);
+		if (is_int($level) === false) {
+			$level = constant('self::' . $level);
+		}
 		if ($this->_treshold >= $level) {
 			return true;
 		} else {
