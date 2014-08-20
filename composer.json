@@ -2,6 +2,7 @@
     "name": "slaxweb/logger",
     "description": "Logger library used by SlaxWeb Framework",
     "license": "GPLv3",
+    "versuib": "0.1.0",
     "authors": [
         {
             "name": "Tomaz Lovrec",
@@ -15,11 +16,6 @@
 	"autoload":	{
 		"psr-0": {
 			"SlaxWeb\\Logger": ""
-		}
-	},
-	"extra":	{
-		"branch-alias": {
-			"dev-master": "0.1-dev"
 		}
 	},
     "target-dir": "SlaxWeb/Logger"
