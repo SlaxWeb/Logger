@@ -2,7 +2,7 @@
     "name": "slaxweb/logger",
     "description": "Logger library used by SlaxWeb Framework",
     "license": "GPLv3",
-    "versuib": "0.1.0",
+    "versuib": "0.1.1",
     "authors": [
         {
             "name": "Tomaz Lovrec",
