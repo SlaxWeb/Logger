@@ -182,10 +182,14 @@ class Logger
 	 * @return string Interpolated string
 	 */
 	protected function _interpolate($message, array $context = array ())
-	{
+    {
 		// build a replacement array with braces around the context keys
 		$replace = array ();
-		foreach ($context as $key => $val) {
+        foreach ($context as $key => $val) {
+            // convert $val to string with var_export
+            if (is_string($val) === false || is_numeric($val) === false) {
+                $val = var_export($val, true);
+            }
 			$replace['{' . $key . '}'] = $val;
 		}
 
