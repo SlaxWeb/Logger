@@ -11,7 +11,8 @@
     ],
     "require": {
 		"php":	">=7.0.0",
-        "monolog/monolog": "~1.17"
+        "monolog/monolog": "~1.17",
+        "slaxweb/config": "0.1.*@dev"
     },
     "suggest": {
         "pimple/pimple": "Make use of available providers for Pimple version 3.0.x"
