@@ -32,6 +32,6 @@ the logger definition. Of course, the above configuration items are required as
 well. All that remains to do is to register the Service Provider of the logger,
 and it will define the logger instantiation to the **logger.service** key name.
 ```php
-$container->register(\SlaxWeb\Logger\Service\Provider);
+$container->register(new \SlaxWeb\Logger\Service\Provider);
 $container["logger.service"]->addInfo("Logger loaded");
 ```
