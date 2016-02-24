@@ -57,6 +57,14 @@ class Factory
         return $logger;
     }
 
+    /**
+     * Initialize StreamHandler
+     *
+     * Initialize the Monolog StreamHandler handler and return it.
+     *
+     * @param \SlaxWeb\Config\Container $config The Config componen instance
+     * @return StreamHandler
+     */
     protected function _initStreamHandler(Config $config): LogHandlerInterface
     {
         return new \Monolog\Handler\StreamHandler(
