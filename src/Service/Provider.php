@@ -38,7 +38,7 @@ class Provider implements \Pimple\ServiceProviderInterface
              */
             if (
                 isset($cont["config.service"]) === false
-                || $cont["config.service"] instanceof \SlaxWeb\Config\Container
+                || get_class($cont["config.service"]) !== "SlaxWeb\\Config\\Container"
             ) {
                 throw new \SlaxWeb\Logger\Exception\ConfigurationException(
                     "Config component provider must be registered before you "
@@ -58,7 +58,7 @@ class Provider implements \Pimple\ServiceProviderInterface
             $handler = null;
             switch ($cont["config.service"]["logger.loggerType"]) {
                 case Helper::L_TYPE_FILE:
-                    $handler = $container["logger.{$cont["config.service"]["logger.loggerType"]}.service"];
+                    $handler = $cont["logger.{$cont["config.service"]["logger.loggerType"]}.service"];
                     break;
                 default:
                     throw new \SlaxWeb\Logger\Exception\UnknownHandlerException(
@@ -74,7 +74,7 @@ class Provider implements \Pimple\ServiceProviderInterface
         $container["logger.StreamHandler.service"] = $container->factory(
             function (Container $cont) {
                 return new \Monolog\Handler\StreamHandler(
-                    ...$cont["config"]["logger.handlerArgs.{$cont["config"]["logger.loggerType"]}"]
+                    ...$cont["config.service"]["logger.handlerArgs.{$cont["config.service"]["logger.loggerType"]}"]
                 );
             }
         );
@@ -93,6 +93,6 @@ class Provider implements \Pimple\ServiceProviderInterface
     {
         return isset($config["logger.name"])
             && isset($config["logger.loggerType"])
-            && isset($config["logger.streamSettings.{$config["logger.loggerType"]}"]);
+            && isset($config["logger.handlerArgs.{$config["logger.loggerType"]}"]);
     }
 }

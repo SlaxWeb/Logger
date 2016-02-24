@@ -85,6 +85,6 @@ class Factory
     {
         return isset($config["logger.name"])
             && isset($config["logger.loggerType"])
-            && isset($config["logger.streamSettings.{$config["logger.loggerType"]}"]);
+            && isset($config["logger.handlerArgs.{$config["logger.loggerType"]}"]);
     }
 }
