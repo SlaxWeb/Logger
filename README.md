@@ -6,6 +6,23 @@ only a Service Provider for the Pimple Dependency Injection Container, and a
 Factory for instantiation of the logger library. The Logger component also
 depends on the Config component of the SlaxWeb\Framework.
 
+Installation
+============
+
+Easiest method of installation is through composer, to install just edit your
+composer.json file to contain:
+```json
+{
+    "require": {
+        "slaxweb/logger": "0.2.*@dev"
+    },
+    "minimum-stability": "dev"
+}
+```
+
+The *minimum-stability* directive is required, as the Logger components depends
+on packages that are still in development.
+
 Usage
 =====
 
