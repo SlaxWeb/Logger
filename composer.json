@@ -12,7 +12,7 @@
     "require": {
 		"php":	">=7.0.0",
         "monolog/monolog": "~1.17",
-        "slaxweb/config": "dev-develop"
+        "slaxweb/config": "~0.1"
     },
     "suggest": {
         "pimple/pimple": "Make use of available providers for Pimple version 3.0.x"
@@ -24,7 +24,7 @@
 	},
     "extra": {
         "branch-alias": {
-            "dev-develop": "0.2.x-dev"
+            "dev-develop": "0.3.x-dev"
         }
 	}
 }

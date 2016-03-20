@@ -1,5 +1,7 @@
 # Logger
 
+[![Build Status](https://travis-ci.org/SlaxWeb/Logger.svg?branch=0.2.0)](https://travis-ci.org/SlaxWeb/Config)
+
 The SlaxWeb\Logger component is only a simple wrapper around the Seldaek/monolog
 library to provide an easier integration into the SlaxWeb\Framework. It provides
 only a Service Provider for the Pimple Dependency Injection Container, and a
@@ -14,14 +16,10 @@ composer.json file to contain:
 ```json
 {
     "require": {
-        "slaxweb/logger": "0.2.*@dev"
-    },
-    "minimum-stability": "dev"
+        "slaxweb/logger": "~0.2"
+    }
 }
 ```
-
-The *minimum-stability* directive is required, as the Logger components depends
-on packages that are still in development.
 
 Usage
 =====
