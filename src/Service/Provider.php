@@ -64,7 +64,7 @@ class Provider implements \Pimple\ServiceProviderInterface
                         case Helper::L_TYPE_FILE:
                             $container["temp.logger.settings"] = $settings;
                             $handler = $container["logger.{$type}.service"];
-                            unset($continer["temp.logger.settings"]);
+                            unset($container["temp.logger.settings"]);
                             break;
                         default:
                             throw new \SlaxWeb\Logger\Exception\UnknownHandlerException(
