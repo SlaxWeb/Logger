@@ -33,7 +33,7 @@ class Provider implements \Pimple\ServiceProviderInterface
     public function register(Container $container)
     {
         $container["logger.service"] = $container->protect(
-            function (string $logger = "") use ($container)
+            function (string $loggerName = "") use ($container)
             {
                 /*
                  * Check the config service has been defined and provides correct
@@ -47,73 +47,41 @@ class Provider implements \Pimple\ServiceProviderInterface
                 }
 
                 $config = $container["config.service"];
-
-                // check all config items exist
-                if ($this->_checkConfig($config, $loggerName) === false) {
-                    throw new \SlaxWeb\Logger\Exception\ConfigurationException(
-                        "Logger configuration is not complete. Make sure all required settings are properly set."
-                    );
+                if ($loggerName === "") {
+                    $loggerName = $config["logger.defaultLogger"];
                 }
 
                 // if already in the container, return it
-                if (LoggerContainer::hasLogger($logger)) {
-                    return LoggerContainer::getInstance($logger);
+                if (LoggerContainer::hasLogger($loggerName)) {
+                    return LoggerContainer::getInstance($loggerName);
                 }
 
-                // load propper handler and instantiate the Monolog\Logger
-                $handler = null;
-                $loggerType = $config["logger.loggerType"][$logger];
-                switch ($loggerType) {
-                    case Helper::L_TYPE_FILE:
-                        $container["temp.logger.property"] = [
-                            "name"  =>  $logger,
-                            "type"  =>  $type
-                        ];
-                        $handler = $container["logger.{$loggerType}.service"];
-                        break;
-                    default:
-                        throw new \SlaxWeb\Logger\Exception\UnknownHandlerException(
-                            "The handler you are tring to use is not known or not supported."
-                        );
+                $logger = new MLogger($loggerName);
+                foreach ($config["logger.loggerSettings"][$loggerName] as $type => $settings) {
+                    // load propper handler and instantiate the Monolog\Logger
+                    $handler = null;
+                    switch ($type) {
+                        case Helper::L_TYPE_FILE:
+                            $container["temp.logger.settings"] = $settings;
+                            $handler = $container["logger.{$type}.service"];
+                            unset($continer["temp.logger.settings"]);
+                            break;
+                        default:
+                            throw new \SlaxWeb\Logger\Exception\UnknownHandlerException(
+                                "The handler you are tring to use is not known or not supported."
+                            );
+                    }
+                    $logger->pushHandler($handler);
                 }
-                $logger = new MLogger($logger);
-                $logger->pushHandler($handler);
+
                 return $logger;
             }
         );
 
         $container["logger.StreamHandler.service"] = $container->factory(
             function (Container $cont) {
-                $type = $cont["temp.logger.property"]["type"];
-                $logger = $cont["temp.logger.property"]["name"];
-                unset(
-                    $cont["temp.logger.property"]["type"],
-                    $cont["temp.logger.property"]["name"]
-                );
-
-                return new \Monolog\Handler\StreamHandler(
-                    ...$cont["config.service"]["logger.handlerArgs.{$type}"][$logger]
-                );
+                return new \Monolog\Handler\StreamHandler(...$cont["temp.logger.settings"]);
             }
         );
-    }
-
-    /**
-     * Check Logger configuration
-     *
-     * Check that all keys that are required to instantiate the Logger component exist.
-     *
-     * @param \SlaxWeb\Config\Container $config Configuration module
-     * @param string $loggerName Name of the logger that is going to be initialized
-     * @return bool
-     */
-    protected function _checkConfig(Config $config, string $loggerName): bool
-    {
-        if ($loggerName === "" && ($loggerName = $config["logger.name"] ?? "") === "") {
-            return false;
-        }
-
-        return ($type = $config["logger.loggerType"][$loggerName] ?? false)
-            && $config["logger.handlerArgs.{$type}"][$loggerName] ?? false;
     }
 }
