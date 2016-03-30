@@ -15,6 +15,7 @@ namespace SlaxWeb\Logger;
 
 use Monolog\Logger as MLogger;
 use SlaxWeb\Config\Container as Config;
+use Monolog\Registry as LoggerContainer;
 use Monolog\Handler\HandlerInterface as LogHandlerInterface;
 
 class Factory
@@ -26,34 +27,43 @@ class Factory
      * values retrieved from the Config component.
      *
      * @param \SlaxWeb\Config\Container $config SlaxWeb Config component
+     * @param string $loggerName Logger name
      * @return \Monolog\Logger Logger instance
      */
-    public static function init(
-        Config $config
-    ): MLogger {
+    public static function init(Config $config, string $loggerName): MLogger
+    {
         // check all config items exist
         if (self::_checkConfig($config) === false) {
             throw new Exception\ConfigurationException(
-                "Logger configuration is not complete. Make sure all "
-                . "required settings are properly set."
+                "Logger configuration is not complete. Make sure all required settings are properly set."
             );
         }
 
-        // load propper handler and instantiate the Monolog\Logger
-        $handler = null;
-        switch ($config["logger.loggerType"]) {
-            case Helper::L_TYPE_FILE:
-                $method = "_init{$config["logger.loggerType"]}";
-                $handler = self::{$method}($config);
-                break;
-            default:
-                throw new Exception\UnknownHandlerException(
-                    "The handler you are tring to use is not known or not "
-                    . "supported."
-                );
+        if ($loggerName === "") {
+            $loggerName = $config["logger.defaultLogger"];
         }
-        $logger = new MLogger($config["logger.name"]);
-        $logger->pushHandler($handler);
+
+        // if already in the container, return it
+        if (LoggerContainer::hasLogger($loggerName)) {
+            return LoggerContainer::getInstance($loggerName);
+        }
+
+        $logger = new MLogger($loggerName);
+        foreach ($config["logger.loggerSettings"][$loggerName] as $type => $settings) {
+            // load propper handler and instantiate the Monolog\Logger
+            $handler = null;
+            switch ($type) {
+                case Helper::L_TYPE_FILE:
+                    $method = "_init{$type}";
+                    $handler = self::{$method}($settings);
+                    break;
+                default:
+                    throw new Exception\UnknownHandlerException(
+                        "The handler you are tring to use is not known or not supported."
+                    );
+            }
+            $logger->pushHandler($handler);
+        }
         return $logger;
     }
 
@@ -62,29 +72,11 @@ class Factory
      *
      * Initialize the Monolog StreamHandler handler and return it.
      *
-     * @param \SlaxWeb\Config\Container $config The Config componen instance
+     * @param array $settings Handler settings in an array
      * @return StreamHandler
      */
-    protected function _initStreamHandler(Config $config): LogHandlerInterface
+    protected function _initStreamHandler(array $settings): LogHandlerInterface
     {
-        return new \Monolog\Handler\StreamHandler(
-            ...$config["logger.handlerArgs.{$config["logger.loggerType"]}"]
-        );
-    }
-
-    /**
-     * Check Logger configuration
-     *
-     * Check that all keys that are required to instantiate the Logger component
-     * exist.
-     *
-     * @param \SlaxWeb\Config\Container $config Configuration module
-     * @return bool
-     */
-    protected static function _checkConfig(Config $config): bool
-    {
-        return isset($config["logger.name"])
-            && isset($config["logger.loggerType"])
-            && isset($config["logger.handlerArgs.{$config["logger.loggerType"]}"]);
+        return new \Monolog\Handler\StreamHandler(...$settings);
     }
 }
