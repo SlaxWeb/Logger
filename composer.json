@@ -10,21 +10,21 @@
         }
     ],
     "require": {
-		"php":	">=7.0.0",
+        "php":  ">=7.0.0",
         "monolog/monolog": "~1.17"
     },
     "suggest": {
         "pimple/pimple": "Make use of available providers for Pimple version 3.0.x",
         "slaxweb/config": "If you want to use the Factory or the Service Provider,  Config@0.2.x component is required."
     },
-	"autoload":	{
-		"psr-4": {
-			"SlaxWeb\\Logger\\": "src/"
-		}
-	},
+    "autoload": {
+        "psr-4": {
+            "SlaxWeb\\Logger\\": "src/"
+        }
+    },
     "extra": {
         "branch-alias": {
             "dev-develop": "0.3.x-dev"
         }
-	}
+    }
 }
