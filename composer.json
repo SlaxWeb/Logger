@@ -2,7 +2,6 @@
     "name": "slaxweb/logger",
     "description": "Logger component for SlaxWeb Framework",
     "license": "MIT",
-    "version": "0.2.0",
     "authors": [
         {
             "name": "Tomaz Lovrec",
@@ -15,7 +14,7 @@
     },
     "suggest": {
         "pimple/pimple": "Make use of available providers for Pimple version 3.0.x",
-        "slaxweb/config": "If you want to use the Factory or the Service Provider,  Config@0.2.x component is required."
+        "slaxweb/config": "If you want to use the Factory or the Service Provider, Config component is required."
     },
     "autoload": {
         "psr-4": {
@@ -24,7 +23,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-develop": "0.3.x-dev"
+            "dev-master": "0.4.x-dev"
         }
     }
 }
