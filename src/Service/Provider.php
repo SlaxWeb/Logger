@@ -35,6 +35,10 @@ class Provider implements \Pimple\ServiceProviderInterface
         $container["logger.service"] = $container->protect(
             function (string $loggerName = "") use ($container)
             {
+                $cacheName = "logger.service-{$loggerName}";
+                if (isset($container[$cacheName])) {
+                    return $container[$cacheName];
+                }
                 /*
                  * Check the config service has been defined and provides correct
                  * object
@@ -74,7 +78,7 @@ class Provider implements \Pimple\ServiceProviderInterface
                     $logger->pushHandler($handler);
                 }
 
-                return $logger;
+                return $container[$cacheName] = $logger;
             }
         );
 
