@@ -17,7 +17,6 @@ use Pimple\Container;
 use SlaxWeb\Logger\Helper;
 use Monolog\Logger as MLogger;
 use SlaxWeb\Config\Container as Config;
-use Monolog\Registry as LoggerContainer;
 
 class Provider implements \Pimple\ServiceProviderInterface
 {
@@ -53,11 +52,6 @@ class Provider implements \Pimple\ServiceProviderInterface
                 $config = $container["config.service"];
                 if ($loggerName === "") {
                     $loggerName = $config["logger.defaultLogger"];
-                }
-
-                // if already in the container, return it
-                if (LoggerContainer::hasLogger($loggerName)) {
-                    return LoggerContainer::getInstance($loggerName);
                 }
 
                 $logger = new MLogger($loggerName);
