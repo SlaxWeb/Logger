@@ -78,11 +78,15 @@ class Provider implements \Pimple\ServiceProviderInterface
 
         $container["logger.StreamHandler.service"] = $container->factory(
             function (Container $cont) {
-                if ($cont["temp.logger.settings"][0][0] !== DIRECTORY_SEPARATOR) {
-                    $cont["temp.logger.settings"][0] = $cont["config.service"]["logger.logFilePath"] ?? ""
-                        . $cont["temp.logger.settings"][0];
+                $settings = $cont["temp.logger.settings"];
+
+                // if the log file name does not begin with a dir separator, treat
+                // it as relative path and prepend 'logFilePath'
+                if ($settings[0][0] !== DIRECTORY_SEPARATOR) {
+                    $settings[0] = ($cont["config.service"]["logger.logFilePath"] ?? "")
+                        . $settings[0];
                 }
-                return new \Monolog\Handler\StreamHandler(...$cont["temp.logger.settings"]);
+                return new \Monolog\Handler\StreamHandler(...$settings);
             }
         );
     }
