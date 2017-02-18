@@ -6,6 +6,11 @@ Changes between versions.
 
 ## v0.4
 
+### v0.4.1
+
+* Fix relative log file path handling in service provider that was causing a notice
+to be thrown
+
 ### v0.4.0
 
 * Save logger object to application properties and return it on consecutive calls
