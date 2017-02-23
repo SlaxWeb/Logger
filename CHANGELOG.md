@@ -4,6 +4,10 @@ Changes between versions.
 
 ## Current changes
 
+* remove service provider (moved to main framework component)
+* remove factory
+* remove unneeded exception classes (moved to main framework component)
+
 ## v0.4
 
 ### v0.4.1
